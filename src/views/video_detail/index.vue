@@ -92,7 +92,7 @@ export default {
         sources: [
           {
             type: 'application/x-mpegURL',
-            src: 'https://video-dev.github.io/streams/x36xhzz/x36xhzz.m3u8'
+            src: 'http://127.0.0.1:8081/website/resources/japan/myab-006.mp4'
           }
         ],
         poster:
