@@ -11,7 +11,7 @@
  Target Server Version : 50549
  File Encoding         : 65001
 
- Date: 07/11/2019 17:05:36
+ Date: 10/11/2019 11:38:57
 */
 
 SET NAMES utf8mb4;
@@ -27,18 +27,21 @@ CREATE TABLE `tb_actor`  (
   `chinese_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `contry` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `birth` year(4) NULL DEFAULT NULL,
-  `type` int(11) NULL DEFAULT NULL COMMENT '1：日本；2：美国；',
+  `type` int(11) NULL DEFAULT NULL COMMENT '1：日本；2：美国；3:图片',
   `cover_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `creat_time` datetime NULL DEFAULT NULL,
   `creater` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of tb_actor
 -- ----------------------------
-INSERT INTO `tb_actor` VALUES (1, 'cxy', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `tb_actor` VALUES (1, 'cxy', '崔祥瑜', 'china', NULL, 3, NULL, NULL, NULL, '');
+INSERT INTO `tb_actor` VALUES (2, 'zs', '张三', 'china', NULL, 3, NULL, NULL, NULL, '');
+INSERT INTO `tb_actor` VALUES (3, 'cxy', '崔祥瑜', 'china', NULL, 1, NULL, NULL, NULL, '');
+INSERT INTO `tb_actor` VALUES (4, 'zs', '张三', 'china', NULL, 1, NULL, NULL, NULL, '');
 
 -- ----------------------------
 -- Table structure for tb_actor_type
@@ -80,12 +83,16 @@ CREATE TABLE `tb_picture`  (
   `exist` int(11) NULL DEFAULT NULL COMMENT '1：存在；2：已删除；3：未入库',
   `remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of tb_picture
 -- ----------------------------
-INSERT INTO `tb_picture` VALUES (1, 'ccc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `tb_picture` VALUES (1, 'ccc', '/pics', '/pics/pic1.jpg', '2019-11-08 13:48:03', NULL, NULL, NULL, 'chinese', 1, NULL);
+INSERT INTO `tb_picture` VALUES (2, 'ccc', '/pics', '/pics/pic1.jpg', '2019-11-08 13:48:03', NULL, NULL, NULL, 'chinese', 1, NULL);
+INSERT INTO `tb_picture` VALUES (3, 'ccc', '/pics', '/pics/pic2.jpg', '2019-11-08 13:48:03', NULL, NULL, NULL, 'chinese', 1, NULL);
+INSERT INTO `tb_picture` VALUES (4, 'ccc', '/pics', '/pics/pic2.jpg', '2019-11-08 13:48:03', NULL, NULL, NULL, 'chinese', 1, NULL);
+INSERT INTO `tb_picture` VALUES (5, 'Sennou Ryokan', '/Sennou Ryokan', '/Sennou Ryokan\\01.jpg', '2019-11-08 13:48:03', NULL, NULL, NULL, 'chinese', 1, NULL);
 
 -- ----------------------------
 -- Table structure for tb_picture_actor
@@ -102,6 +109,11 @@ CREATE TABLE `tb_picture_actor`  (
 -- Records of tb_picture_actor
 -- ----------------------------
 INSERT INTO `tb_picture_actor` VALUES (1, 1, 1);
+INSERT INTO `tb_picture_actor` VALUES (2, 1, 2);
+INSERT INTO `tb_picture_actor` VALUES (3, 2, 1);
+INSERT INTO `tb_picture_actor` VALUES (4, 3, 2);
+INSERT INTO `tb_picture_actor` VALUES (5, 4, 1);
+INSERT INTO `tb_picture_actor` VALUES (6, 5, 2);
 
 -- ----------------------------
 -- Table structure for tb_picture_type
@@ -112,7 +124,21 @@ CREATE TABLE `tb_picture_type`  (
   `picture_id` int(11) NULL DEFAULT NULL,
   `type_id` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of tb_picture_type
+-- ----------------------------
+INSERT INTO `tb_picture_type` VALUES (1, 1, 1);
+INSERT INTO `tb_picture_type` VALUES (2, 1, 2);
+INSERT INTO `tb_picture_type` VALUES (3, 1, 3);
+INSERT INTO `tb_picture_type` VALUES (4, 1, 4);
+INSERT INTO `tb_picture_type` VALUES (5, 2, 4);
+INSERT INTO `tb_picture_type` VALUES (6, 3, 2);
+INSERT INTO `tb_picture_type` VALUES (7, 4, 1);
+INSERT INTO `tb_picture_type` VALUES (8, 4, 3);
+INSERT INTO `tb_picture_type` VALUES (9, 5, 4);
+INSERT INTO `tb_picture_type` VALUES (10, 5, 1);
 
 -- ----------------------------
 -- Table structure for tb_sys_menu
@@ -294,13 +320,19 @@ CREATE TABLE `tb_type`  (
   `chinese_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `type` int(11) NULL DEFAULT NULL COMMENT '1:日本影片；2：美国影片；3：漫画',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of tb_type
 -- ----------------------------
-INSERT INTO `tb_type` VALUES (1, 'aaa', 'aaa', NULL);
-INSERT INTO `tb_type` VALUES (2, 'bbb', 'bbb', NULL);
+INSERT INTO `tb_type` VALUES (1, 'aaa', 'aaa', 3);
+INSERT INTO `tb_type` VALUES (2, 'bbb', 'bbb', 3);
+INSERT INTO `tb_type` VALUES (3, 'type3', 'type3', 3);
+INSERT INTO `tb_type` VALUES (4, 'type4', 'type4', 3);
+INSERT INTO `tb_type` VALUES (5, 'aaa', 'aaa', 1);
+INSERT INTO `tb_type` VALUES (6, 'bbb', 'bbb', 1);
+INSERT INTO `tb_type` VALUES (7, 'type3', 'type3', 1);
+INSERT INTO `tb_type` VALUES (8, 'type4', 'type4', 1);
 
 -- ----------------------------
 -- Table structure for tb_user_role
@@ -353,7 +385,14 @@ CREATE TABLE `tb_video`  (
   `exist` int(11) NULL DEFAULT NULL COMMENT '1：存在；2：已删除；3：未入库',
   `remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of tb_video
+-- ----------------------------
+INSERT INTO `tb_video` VALUES (1, 'GVG-624-0', '/GVG-624.mp4', '/7e6n.jpg', '2019-11-10 10:03:14', NULL, 1, 1, NULL);
+INSERT INTO `tb_video` VALUES (2, 'GVG-624-1', '/GVG-624.mp4', '/7e6n.jpg', '2019-11-10 10:03:14', NULL, 1, 1, NULL);
+INSERT INTO `tb_video` VALUES (3, 'GVG-624-2', '/GVG-624.mp4', '/7e6n.jpg', '2019-11-10 10:03:14', NULL, 1, 1, NULL);
 
 -- ----------------------------
 -- Table structure for tb_video_actor
@@ -367,6 +406,14 @@ CREATE TABLE `tb_video_actor`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
+-- Records of tb_video_actor
+-- ----------------------------
+INSERT INTO `tb_video_actor` VALUES (1, 1, 3);
+INSERT INTO `tb_video_actor` VALUES (2, 1, 4);
+INSERT INTO `tb_video_actor` VALUES (3, 2, 3);
+INSERT INTO `tb_video_actor` VALUES (4, 3, 4);
+
+-- ----------------------------
 -- Table structure for tb_video_type
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_video_type`;
@@ -375,6 +422,18 @@ CREATE TABLE `tb_video_type`  (
   `video_id` int(11) NULL DEFAULT NULL,
   `type_id` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of tb_video_type
+-- ----------------------------
+INSERT INTO `tb_video_type` VALUES (1, 1, 5);
+INSERT INTO `tb_video_type` VALUES (2, 1, 6);
+INSERT INTO `tb_video_type` VALUES (3, 1, 7);
+INSERT INTO `tb_video_type` VALUES (4, 1, 8);
+INSERT INTO `tb_video_type` VALUES (5, 2, 5);
+INSERT INTO `tb_video_type` VALUES (6, 2, 7);
+INSERT INTO `tb_video_type` VALUES (7, 3, 6);
+INSERT INTO `tb_video_type` VALUES (8, 3, 8);
 
 SET FOREIGN_KEY_CHECKS = 1;
