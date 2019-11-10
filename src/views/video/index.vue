@@ -2,8 +2,8 @@
   <div v-if="tableData" class="main">
     <!-- 查询表单 -->
     <el-form :inline="true">
-      <el-form-item label="图片名">
-        <el-input v-model="listQuery.pictureName" clearable placeholder="请输入图片名" />
+      <el-form-item label="影片名">
+        <el-input v-model="listQuery.pictureName" clearable placeholder="请输入影片名" />
       </el-form-item>
       <el-form-item label="作者">
         <el-select v-model="listQuery.actorName" placeholder="请选择" value-key="id">
@@ -13,13 +13,6 @@
             :label="item.chineseName"
             :value="item.id"
           />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="语言">
-        <el-select v-model="listQuery.language" placeholder="请选择" clearable>
-          <el-option label="汉语" value="chinese" />
-          <el-option label="英语" value="english" />
-          <el-option label="日语" value="japan" />
         </el-select>
       </el-form-item>
       <el-form-item label="分类">
@@ -54,11 +47,6 @@
       >
         <el-card :body-style="{ padding: '0px' }">
           <el-image :src="item.coverUrl" :preview-src-list="item.address" @click="showimg" lazy></el-image>
-          <!-- <img
-            src="http://127.0.0.1:8081/website/resources/_MG_0138.jpg"
-            class="image"
-            @click="imgview"
-          />-->
           <div style="padding: 14px;" @click="jump(item.id)">
             <span>{{ item.name }}</span>
             <div class="bottom clearfix">
@@ -102,7 +90,7 @@
   </div>
 </template>
 <script>
-import { getPageList } from '@/api/picture'
+import { getPageList } from '@/api/video'
 export default {
   data() {
     return {
@@ -111,8 +99,7 @@ export default {
         pageNum: 1,
         pageSize: 10,
         actorName: null,
-        pictureName: null,
-        language: null,
+        videoName: null,
         types: null
       },
       typeMap: '',

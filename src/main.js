@@ -7,6 +7,9 @@ import 'element-ui/lib/theme-chalk/index.css'
 // import locale from 'element-ui/lib/locale/lang/en' // lang i18n
 Vue.use(ElementUI)
 
+import VueVideoPlayer from 'vue-video-player'
+Vue.use(VueVideoPlayer)
+
 import '@/styles/index.scss' // global css
 
 import App from './App'

@@ -62,8 +62,47 @@ export const constantRoutes = [
       {
         path: 'index',
         component: () => import('@/views/picture/index'),
-        name: 'tupian',
-        meta: { title: 'tupian' }
+        name: '图片',
+        meta: { title: '图片' }
+      }
+    ]
+  },
+  {
+    path: '/picture_detail',
+    component: Layout,
+    redirect: '/picture_detail/index',
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/picture_detail/index'),
+        name: '图片详情',
+        meta: { title: '图片详情' }
+      }
+    ]
+  },
+  {
+    path: '/video',
+    component: Layout,
+    redirect: '/video/index',
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/video/index'),
+        name: '影片',
+        meta: { title: '影片' }
+      }
+    ]
+  },
+  {
+    path: '/video_detail',
+    component: Layout,
+    redirect: '/video_detail/index',
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/video_detail/index'),
+        name: '影片详情',
+        meta: { title: '影片详情' }
       }
     ]
   }
