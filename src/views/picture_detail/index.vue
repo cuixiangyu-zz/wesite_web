@@ -88,16 +88,6 @@ export default {
   created() {
     this.getDetil()
   },
-  // beforeRouteEnter(to, from, next) {
-  //   next(vm => {
-  //     // 通过 `vm` 访问组件实例
-  //     console.log(vm.$route.params)
-  //     this.id = vm.$route.params.id
-  //     getDetil(vm.$route.params.id).then(res => {
-  //       this.tableData = res
-  //     })
-  //   })
-  // },
   methods: {
     getDetil() {
       this.querylist.id = this.$route.params.id

@@ -6,7 +6,7 @@
     <el-row type="flex">
       <el-col :span="6" :offset="6">
         <el-card>
-          <el-image :src="tableData.coverUrl" fit="fill"></el-image>
+          <el-image :key="tableData.id" :src="tableData.coverUrl" :lazy="true" fit="fill"></el-image>
         </el-card>
       </el-col>
       <el-col :span="6">
@@ -42,15 +42,15 @@
       </el-col>
     </el-row>
 
-    <el-row style="width: 80%; left: 125px;">
+    <el-row style="width: 60%; left: 20%;" v-for="video in this.srcList" :key="video.poster">
       <div class="player-container">
-        <video-player class="vjs-custom-skin" :options="playerOptions"></video-player>
+        <video-player class="vjs-custom-skin" :options="video"></video-player>
       </div>
     </el-row>
   </div>
 </template>
 <script>
-import { getDetil } from '@/api/pictureDetail'
+import { getDetil } from '@/api/videoDetail'
 // 引入video样式
 import 'video.js/dist/video-js.css'
 import 'vue-video-player/src/custom-theme.css'
@@ -75,43 +75,43 @@ export default {
       deviceDetail: null,
       imgSrc: 'http://127.0.0.1:8081/website/resources/_MG_0138.jpg',
       url: 'http://127.0.0.1:8081/website/resources/_MG_0138.jpg',
-      srcList: [
-        // 'http://127.0.0.1:8081/website/resources/_MG_0170.jpg',
-        // 'http://127.0.0.1:8081/website/resources/_MG_0177.jpg'
-      ],
-      playerOptions: {
-        playbackRates: [0.7, 1.0, 1.5, 2.0], // 播放速度
-        autoplay: false, // 如果true,浏览器准备好时开始回放。
-        controls: true, // 控制条
-        preload: 'auto', // 视频预加载
-        muted: false, // 默认情况下将会消除任何音频。
-        loop: false, // 导致视频一结束就重新开始。
-        language: 'zh-CN',
-        aspectRatio: '16:9', // 将播放器置于流畅模式，并在计算播放器的动态大小时使用该值。值应该代表一个比例 - 用冒号分隔的两个数字（例如"16:9"或"4:3"）
-        fluid: true, // 当true时，Video.js player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
-        sources: [
-          {
-            type: 'application/x-mpegURL',
-            src: 'http://127.0.0.1:8081/website/resources/japan/myab-006.mp4'
-          }
-        ],
-        poster:
-          'http://static.smartisanos.cn/pr/img/video/video_03_cc87ce5bdb.jpg', // 你的封面地址
-        width: document.documentElement.clientWidth,
-        notSupportedMessage: '此视频暂无法播放，请稍后再试' // 允许覆盖Video.js无法播放媒体源时显示的默认信息。
-      }
+      srcList: []
     }
   },
   created() {
-    // this.getDetil()
+    this.getDetil()
   },
   methods: {
     getDetil() {
       this.querylist.id = this.$route.params.id
       console.log(this.querylist)
 
-      getDetil(this.querylist).then(res => {
+      getDetil(this.querylist).then(res =>    {
+        console.log(res)
         this.tableData = res
+        for (const i of this.tableData.address) {
+          const videoinfo = {
+            playbackRates: [0.7, 1.0, 1.5, 2.0], // 播放速度
+            autoplay: false, // 如果true,浏览器准备好时开始回放。
+            controls: true, // 控制条
+            preload: 'auto', // 视频预加载
+            muted: false, // 默认情况下将会消除任何音频。
+            loop: false, // 导致视频一结束就重新开始。
+            language: 'zh-CN',
+            aspectRatio: '16:9', // 将播放器置于流畅模式，并在计算播放器的动态大小时使用该值。值应该代表一个比例 - 用冒号分隔的两个数字（例如"16:9"或"4:3"）
+            fluid: true, // 当true时，Video.js player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
+            sources: [
+              {
+                src: i
+              }
+            ],
+            poster: this.tableData.coverUrl,
+            width: document.documentElement.clientWidth,
+            notSupportedMessage: '此视频暂无法播放，请稍后再试' // 允许覆盖Video.js无法播放媒体源时显示的默认信息。
+          }
+          this.srcList.push(videoinfo)
+        }
+        console.log(this.srcList)
       })
     },
 

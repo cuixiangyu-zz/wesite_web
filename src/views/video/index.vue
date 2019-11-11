@@ -22,21 +22,6 @@
         <el-button type="primary" @click="getPageList">查询</el-button>
       </el-form-item>
     </el-form>
-    <!-- <el-row>
-      <el-col :span="8" v-for="(o, index) in 2" :key="o" :offset="index > 0 ? 2 : 0">
-        <el-card :body-style="{ padding: '0px' }">
-          <img src="http://127.0.0.1:8081/website/resources/_MG_0138.jpg" class="image" />
-          <div style="padding: 14px;">
-            <span>好吃的汉堡</span>
-            <div class="bottom clearfix">
-              <time class="time">{{ currentDate }}</time>
-              <el-button type="text" class="button">操作按钮</el-button>
-            </div>
-          </div>
-        </el-card>
-      </el-col>
-    </el-row>-->
-
     <el-row class="row-ul" gutter="20">
       <el-col
         v-for="item in tableData.list"
@@ -46,7 +31,7 @@
         @click.native="handleClick"
       >
         <el-card :body-style="{ padding: '0px' }">
-          <el-image :src="item.coverUrl" :preview-src-list="item.address" @click="showimg" lazy></el-image>
+          <el-image :src="item.coverUrl" @click="showimg" lazy></el-image>
           <div style="padding: 14px;" @click="jump(item.id)">
             <span>{{ item.name }}</span>
             <div class="bottom clearfix">
@@ -157,11 +142,11 @@ export default {
     imgview() {
       alert('2222')
     },
-    jump(picid) {
+    jump(videoid) {
       this.$router.push({
-        path: '/picture_detail/index',
-        name: '图片详情', // 要跳转的路径的 name,可在 router 文件夹下的 index.js 文件内找
-        params: { id: picid }
+        path: '/video_detail/index',
+        name: '影片详情', // 要跳转的路径的 name,可在 router 文件夹下的 index.js 文件内找
+        params: { id: videoid }
       })
     },
     showimg() {
