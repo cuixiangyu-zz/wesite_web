@@ -7,3 +7,10 @@ export function getPageList(data) {
     data
   })
 }
+export function sysTools(params) {
+  return request({
+    url: '/video/sysTools',
+    method: 'get',
+    params
+  })
+}

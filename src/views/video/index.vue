@@ -75,7 +75,7 @@
   </div>
 </template>
 <script>
-import { getPageList } from '@/api/video'
+import { getPageList, sysTools } from '@/api/video'
 export default {
   data() {
     return {
@@ -103,6 +103,7 @@ export default {
   },
   methods: {
     getPageList() {
+      sysTools()
       console.log(this.listQuery)
       getPageList(this.listQuery).then(res => {
         this.tableData = res.PageInfo

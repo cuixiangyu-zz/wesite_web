@@ -105,6 +105,19 @@ export const constantRoutes = [
         meta: { title: '影片详情' }
       }
     ]
+  },
+  {
+    path: '/sys_tools',
+    component: Layout,
+    redirect: '/sys_tools/index',
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/sys_tools/index'),
+        name: '工具',
+        meta: { title: '工具' }
+      }
+    ]
   }
   // {
   //   path: '/clinic',
