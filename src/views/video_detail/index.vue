@@ -12,10 +12,10 @@
       <el-col :span="6">
         <el-row style="bottom: 0px; top: 0px; right: 0px; left: 20px;">
           <el-col :span="24">
-            <p style="font-size: 25px; width: 20%;">{{tableData.name}}</p>
+            <p style="font-size: 25px; ">{{tableData.name}}</p>
           </el-col>
           <el-col :span="24">
-            <p style="font-size: 17px; width: 20%;">作者</p>
+            <p style="font-size: 17px; ">作者</p>
             <el-col
               v-for="actor in tableData.actors"
               :span="4"
@@ -46,6 +46,9 @@
       <div class="player-container">
         <video-player class="vjs-custom-skin" :options="video"></video-player>
       </div>
+    </el-row>
+    <el-row style="width: 60%; left: 20%;">
+      
     </el-row>
   </div>
 </template>

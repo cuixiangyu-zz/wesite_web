@@ -103,7 +103,7 @@ export default {
   },
   methods: {
     getPageList() {
-      sysTools()
+      // sysTools()
       console.log(this.listQuery)
       getPageList(this.listQuery).then(res => {
         this.tableData = res.PageInfo
