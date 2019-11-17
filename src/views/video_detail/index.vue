@@ -21,7 +21,7 @@
               :span="4"
               :key="actor.id"
               class="row-li"
-              @click.native="handleClick"
+              @click="getActor(actor.id)"
             >
               <el-tag>{{actor.chineseName}}</el-tag>
             </el-col>
@@ -33,7 +33,7 @@
               :span="4"
               :key="type.id"
               class="row-li"
-              @click.native="handleClick"
+              @click="getType(type)"
             >
               <el-tag>{{type.chineseName}}</el-tag>
             </el-col>
@@ -45,18 +45,18 @@
     <el-row style="width: 60%; left: 20%;" v-for="video in this.srcList" :key="video.poster">
       <div class="player-container">
         <video-player class="vjs-custom-skin" :options="video"></video-player>
+        <input @keyup.left="down">
+        <input @keyup.right="up">
       </div>
     </el-row>
-    <el-row style="width: 60%; left: 20%;">
-      
-    </el-row>
+    <el-row style="width: 60%; left: 20%;"></el-row>
   </div>
 </template>
 <script>
-import { getDetil } from '@/api/videoDetail'
+import { getDetil } from "@/api/videoDetail";
 // 引入video样式
-import 'video.js/dist/video-js.css'
-import 'vue-video-player/src/custom-theme.css'
+import "video.js/dist/video-js.css";
+import "vue-video-player/src/custom-theme.css";
 export default {
   data() {
     return {
@@ -64,7 +64,7 @@ export default {
       querylist: {
         id: null
       },
-
+      video: undefined,
       listQuery: {
         pageNum: 1,
         pageSize: 10,
@@ -73,84 +73,104 @@ export default {
         language: null,
         types: null
       },
-      typeMap: '',
-      actors: '',
+      typeMap: "",
+      actors: "",
       deviceDetail: null,
-      imgSrc: 'http://127.0.0.1:8081/website/resources/_MG_0138.jpg',
-      url: 'http://127.0.0.1:8081/website/resources/_MG_0138.jpg',
+      imgSrc: "http://127.0.0.1:8081/website/resources/_MG_0138.jpg",
+      url: "http://127.0.0.1:8081/website/resources/_MG_0138.jpg",
       srcList: []
-    }
+    };
   },
   created() {
-    this.getDetil()
+    this.getDetil();
+  },
+  mounted() {
+    this.video = this.$refs.video;
+  },
+  updated() {
+    this.video = this.$refs.video;
   },
   methods: {
     getDetil() {
-      this.querylist.id = this.$route.params.id
-      console.log(this.querylist)
+      this.querylist.id = this.$route.params.id;
+      console.log(this.querylist);
 
-        getDetil(this.querylist).then(res =>    {
-            console.log(res)
-            this.tableData = res
-            for (const i of this.tableData.address) {
-                const videoinfo = {
-                    playbackRates: [0.7, 1.0, 1.5, 2.0], // 播放速度
-                    autoplay: false, // 如果true,浏览器准备好时开始回放。
-                    controls: true, // 控制条
-                    preload: 'auto', // 视频预加载
-                    muted: false, // 默认情况下将会消除任何音频。
-                    loop: false, // 导致视频一结束就重新开始。
-                    language: 'zh-CN',
-                    aspectRatio: '16:9', // 将播放器置于流畅模式，并在计算播放器的动态大小时使用该值。值应该代表一个比例 - 用冒号分隔的两个数字（例如"16:9"或"4:3"）
-                    fluid: true, // 当true时，Video.js player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
-                    sources: [
-                        {
-                            src: i
-                        }
-                    ],
-                    poster: this.tableData.coverUrl,
-                    width: document.documentElement.clientWidth,
-                    notSupportedMessage: '此视频暂无法播放，请稍后再试' // 允许覆盖Video.js无法播放媒体源时显示的默认信息。
-                }
-                this.srcList.push(videoinfo)
-            }
-            console.log(this.srcList)
-        })
+      getDetil(this.querylist).then(res => {
+        console.log(res);
+        this.tableData = res;
+        for (const i of this.tableData.address) {
+          const videoinfo = {
+            playbackRates: [0.7, 1.0, 1.5, 2.0], // 播放速度
+            autoplay: false, // 如果true,浏览器准备好时开始回放。
+            controls: true, // 控制条
+            preload: "auto", // 视频预加载
+            muted: false, // 默认情况下将会消除任何音频。
+            loop: false, // 导致视频一结束就重新开始。
+            language: "zh-CN",
+            aspectRatio: "16:9", // 将播放器置于流畅模式，并在计算播放器的动态大小时使用该值。值应该代表一个比例 - 用冒号分隔的两个数字（例如"16:9"或"4:3"）
+            fluid: true, // 当true时，Video.js player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
+            sources: [
+              {
+                src: i
+              }
+            ],
+            poster: this.tableData.coverUrl,
+            width: document.documentElement.clientWidth,
+            notSupportedMessage: "此视频暂无法播放，请稍后再试" // 允许覆盖Video.js无法播放媒体源时显示的默认信息。
+          };
+          this.srcList.push(videoinfo);
+        }
+        console.log(this.srcList);
+      });
     },
 
     handleClick() {
       // alert('11111111')
     },
     getType(type) {
-      event.stopPropagation()
-      const arr = []
-      const arr1 = []
-      arr.push('allTypes')
-      arr.push(type.id)
-      arr1.push(arr)
-      this.listQuery.types = arr1
-      this.listQuery.actorName = null
-      console.log(this.listQuery)
-      this.getPageList()
+      event.stopPropagation();
+      const arr = [];
+      const arr1 = [];
+      arr.push("allTypes");
+      arr.push(type.id);
+      arr1.push(arr);
+      this.listQuery.types = arr1;
+      this.listQuery.actorName = null;
+      console.log(this.listQuery);
+      this.jump();
     },
     getActor(actor) {
-      event.stopPropagation()
-      this.listQuery.actorName = actor
-      this.listQuery.types = null
-      this.getPageList()
+      event.stopPropagation();
+      this.listQuery.actorName = actor;
+      this.listQuery.types = null;
+      this.jump();
     },
     imgview() {
-      alert('2222')
+      alert("2222");
     },
     jump() {
-      alert('111')
+      this.$router.push({
+        path: "/video/index",
+        name: "影片", // 要跳转的路径的 name,可在 router 文件夹下的 index.js 文件内找
+        params: { listQuery: this.listQuery }
+      });
     },
     showimg() {
-      const arr = []
-      arr.push('http://127.0.0.1:8081/website/resources/_MG_0170.jpg')
-      arr.push('http://127.0.0.1:8081/website/resources/_MG_0177.jpg')
-      this.srcList = arr
+      const arr = [];
+      arr.push("http://127.0.0.1:8081/website/resources/_MG_0170.jpg");
+      arr.push("http://127.0.0.1:8081/website/resources/_MG_0177.jpg");
+      this.srcList = arr;
+    },
+    up() {
+      var time = this.video.currentTime
+      console.log(time)
+      this.video.currentTime = time + 120
+    },
+    down() {
+      var time = this.video.currentTime
+      console.log(time)
+      this.video.currentTime = time - 120
     }
   }
-}
+};
 </script>

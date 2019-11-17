@@ -1,8 +1,16 @@
-import request from '@/utils/request'
+import request from "@/utils/request"
 
-export function getPageList(data) {
+export function selectfile(params) {
   return request({
-    url: '/picture/getPageList',
+    url: '/video/selectfile',
+    method: 'get',
+    params
+  })
+}
+
+export function updatefile(data) {
+  return request({
+    url: '/video/updatefile',
     method: 'post',
     data
   })

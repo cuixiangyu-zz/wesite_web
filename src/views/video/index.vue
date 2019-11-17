@@ -75,7 +75,7 @@
   </div>
 </template>
 <script>
-import { getPageList, sysTools } from '@/api/video'
+import { getPageList, sysTools } from "@/api/video";
 export default {
   data() {
     return {
@@ -87,77 +87,87 @@ export default {
         videoName: null,
         types: null
       },
-      typeMap: '',
-      actors: '',
+      typeMap: "",
+      actors: "",
       deviceDetail: null,
-      imgSrc: 'http://127.0.0.1:8081/website/resources/_MG_0170.jpg',
-      url: 'http://127.0.0.1:8081/website/resources/_MG_0170.jpg',
+      imgSrc: "http://127.0.0.1:8081/website/resources/_MG_0170.jpg",
+      url: "http://127.0.0.1:8081/website/resources/_MG_0170.jpg",
       srcList: [
         // 'http://127.0.0.1:8081/website/resources/_MG_0170.jpg',
         // 'http://127.0.0.1:8081/website/resources/_MG_0177.jpg'
       ]
-    }
+    };
   },
   created() {
-    this.getPageList()
+    this.getPageList();
   },
   methods: {
     getPageList() {
       // sysTools()
-      console.log(this.listQuery)
+      var listQuery = this.$route.params.listQuery;
+      if (listQuery !== undefined) {
+        if (listQuery.actorName !== undefined) {
+          this.listQuery.actorName = listQuery.actorName;
+        }
+        if (listQuery.types !== undefined) {
+          this.listQuery.types = listQuery.types;
+        }
+      }
+
+      console.log(this.listQuery);
       getPageList(this.listQuery).then(res => {
-        this.tableData = res.PageInfo
-        this.actors = res.actors
-        this.typeMap = res.typeMap
-      })
+        this.tableData = res.PageInfo;
+        this.actors = res.actors;
+        this.typeMap = res.typeMap;
+      });
     },
     handleCurrentChange(index) {
-      this.listQuery.pageNum = index
-      this.getPageList()
+      this.listQuery.pageNum = index;
+      this.getPageList();
     },
     handleSizeChange(pageSize) {
-      this.listQuery.pageSize = pageSize
-      this.getPageList()
+      this.listQuery.pageSize = pageSize;
+      this.getPageList();
     },
     handleClick() {
       // alert('11111111')
     },
     getType(type) {
-      event.stopPropagation()
-      const arr = []
-      const arr1 = []
-      arr.push('allTypes')
-      arr.push(type.id)
-      arr1.push(arr)
-      this.listQuery.types = arr1
-      this.listQuery.actorName = null
-      console.log(this.listQuery)
-      this.getPageList()
+      event.stopPropagation();
+      const arr = [];
+      const arr1 = [];
+      arr.push("allTypes");
+      arr.push(type.id);
+      arr1.push(arr);
+      this.listQuery.types = arr1;
+      this.listQuery.actorName = null;
+      console.log(this.listQuery);
+      this.getPageList();
     },
     getActor(actor) {
-      event.stopPropagation()
-      this.listQuery.actorName = actor
-      this.listQuery.types = null
-      this.getPageList()
+      event.stopPropagation();
+      this.listQuery.actorName = actor;
+      this.listQuery.types = null;
+      this.getPageList();
     },
     imgview() {
-      alert('2222')
+      alert("2222");
     },
     jump(videoid) {
       this.$router.push({
-        path: '/video_detail/index',
-        name: '影片详情', // 要跳转的路径的 name,可在 router 文件夹下的 index.js 文件内找
+        path: "/video_detail/index",
+        name: "影片详情", // 要跳转的路径的 name,可在 router 文件夹下的 index.js 文件内找
         params: { id: videoid }
-      })
+      });
     },
     showimg() {
-      const arr = []
-      arr.push('http://127.0.0.1:8081/website/resources/_MG_0177.jpg')
-      arr.push('http://127.0.0.1:8081/website/resources/_MG_0170.jpg')
-      this.srcList = arr
+      const arr = [];
+      arr.push("http://127.0.0.1:8081/website/resources/_MG_0177.jpg");
+      arr.push("http://127.0.0.1:8081/website/resources/_MG_0170.jpg");
+      this.srcList = arr;
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -189,7 +199,7 @@ export default {
 .clearfix:before,
 .clearfix:after {
   display: table;
-  content: '';
+  content: "";
 }
 
 .clearfix:after {
