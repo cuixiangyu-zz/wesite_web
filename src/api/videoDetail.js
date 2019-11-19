@@ -7,3 +7,10 @@ export function getDetil(params) {
     params
   })
 }
+export function changelevel(params) {
+  return request({
+    url: '/video/changelevel',
+    method: 'get',
+    params
+  })
+}

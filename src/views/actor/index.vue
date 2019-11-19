@@ -2,9 +2,6 @@
   <div v-if="tableData" class="main">
     <!-- 查询表单 -->
     <el-form :inline="true">
-      <el-form-item label="影片名">
-        <el-input v-model="listQuery.pictureName" clearable placeholder="请输入影片名" />
-      </el-form-item>
       <el-form-item label="作者">
         <el-select v-model="listQuery.actorName" placeholder="请选择" value-key="id">
           <el-option
@@ -14,9 +11,6 @@
             :value="item.id"
           />
         </el-select>
-      </el-form-item>
-      <el-form-item label="分类">
-        <el-cascader-multi v-model="listQuery.types" :data="typeMap" filterable reserve-keyword />
       </el-form-item>
       <el-form-item style="margin-right: 50px;">
         <el-button type="primary" @click="getPageList">查询</el-button>
@@ -31,30 +25,16 @@
         @click.native="handleClick"
       >
         <el-card :body-style="{ padding: '0px' }">
-          <el-image :src="item.coverUrl" @click="showimg" lazy></el-image>
+          <el-image :src="item.coverUrl"  lazy></el-image>
           <div style="padding: 14px;" @click="jump(item.id)">
-            <span>{{ item.name }}</span>
             <div class="bottom clearfix">
-              <time class="time">{{ item.actorname }}</time>
-              <span class="tag-group__title">类型:</span>
-              <el-tag
-                v-for="types in item.types"
-                :key="types.id"
-                size="mini"
-                effect="plain"
-                @click="getType(types)"
-              >{{ types.chineseName }}</el-tag>
+              <span class="tag-group__title">姓名: {{ item.name }}</span>
             </div>
             <div class="bottom clearfix">
-              <time class="time">{{ item.actorname }}</time>
-              <span class="tag-group__title">作者:</span>
-              <el-tag
-                v-for="actors in item.actors"
-                :key="actors.id"
-                size="mini"
-                effect="plain"
-                @click="getActor(actors.id)"
-              >{{ actors.chineseName }}({{actors.count}})</el-tag>
+              <span class="tag-group__title">中文姓名: {{ item.chineseName }}</span>
+            </div>
+            <div class="bottom clearfix">
+              <span class="tag-group__title">作品数量: {{ item.count }}</span>
             </div>
             <div class="bottom clearfix">
               <el-rate
@@ -84,17 +64,14 @@
   </div>
 </template>
 <script>
-import { getPageList } from '@/api/video'
+import { findAll } from '@/api/actor'
 export default {
   data() {
     return {
       tableData: [],
       listQuery: {
         pageNum: 1,
-        pageSize: 10,
-        actorName: null,
-        videoName: null,
-        types: null
+        pageSize: 10
       },
       typeMap: '',
       actors: '',
@@ -108,26 +85,14 @@ export default {
     }
   },
   created() {
-    this.getPageList()
+    this.findAll()
   },
   methods: {
-    getPageList() {
-      // sysTools()
-      var listQuery = this.$route.params.listQuery
-      if (listQuery !== undefined) {
-        if (listQuery.actorName !== undefined) {
-          this.listQuery.actorName = listQuery.actorName
-        }
-        if (listQuery.types !== undefined) {
-          this.listQuery.types = listQuery.types
-        }
-      }
-
+    findAll() {
       console.log(this.listQuery)
-      getPageList(this.listQuery).then(res => {
-        this.tableData = res.PageInfo
-        this.actors = res.actors
-        this.typeMap = res.typeMap
+      findAll(this.listQuery).then(res => {
+        this.tableData = res
+        console.log(res)
       })
     },
     handleCurrentChange(index) {

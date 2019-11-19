@@ -118,6 +118,19 @@ export const constantRoutes = [
         meta: { title: '工具' }
       }
     ]
+  },
+  {
+    path: '/actor',
+    component: Layout,
+    redirect: '/actor/index',
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/actor/index'),
+        name: '演员',
+        meta: { title: '演员' }
+      }
+    ]
   }
   // {
   //   path: '/clinic',
