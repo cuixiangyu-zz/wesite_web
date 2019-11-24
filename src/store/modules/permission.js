@@ -15,7 +15,11 @@ const routesMap = {
   noDoctorList: () => import('@/views/nurse_noDoctorList'),
   doctorSign: () => import('@/views/nurse_doctorSign'),
   docManager: () => import('@/views/manage-doctor/index'),
-  depManager: () => import('@/views/manage-sections/index')
+  depManager: () => import('@/views/manage-sections/index'),
+  videoJapan: () => import('@/views/video_japan'),
+  videoAmerican: () => import('@/views/video_american'),
+  videoComic: () => import('@/views/video_comic'),
+  pictureComic: () => import('@/views/picture_comic')
 }
 
 function handleRoutes(list) {

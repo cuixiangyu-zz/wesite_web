@@ -54,19 +54,19 @@ export const constantRoutes = [
       }
     ]
   },
-  {
-    path: '/picture',
-    component: Layout,
-    redirect: '/picture/index',
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/picture/index'),
-        name: '图片',
-        meta: { title: '图片' }
-      }
-    ]
-  },
+  // {
+  //   path: '/picture',
+  //   component: Layout,
+  //   redirect: '/picture/index',
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       component: () => import('@/views/picture/index'),
+  //       name: '图片',
+  //       meta: { title: '图片' }
+  //     }
+  //   ]
+  // },
   {
     path: '/picture_detail',
     component: Layout,
@@ -80,19 +80,19 @@ export const constantRoutes = [
       }
     ]
   },
-  {
-    path: '/video',
-    component: Layout,
-    redirect: '/video/index',
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/video/index'),
-        name: '影片',
-        meta: { title: '影片' }
-      }
-    ]
-  },
+  // {
+  //   path: '/video',
+  //   component: Layout,
+  //   redirect: '/video/index',
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       component: () => import('@/views/video/index'),
+  //       name: '影片',
+  //       meta: { title: '影片' }
+  //     }
+  //   ]
+  // },
   {
     path: '/video_detail',
     component: Layout,
@@ -132,48 +132,6 @@ export const constantRoutes = [
       }
     ]
   }
-  // {
-  //   path: '/clinic',
-  //   component: Layout,
-  //   redirect: '/clinic/index',
-  //   children: [
-  //     {
-  //       path: 'index',
-  //       component: () => import('@/views/manage-clinic/index'),
-  //       name: 'Clinic',
-  //       meta: { title: '诊室管理' }
-  //     }
-  //   ]
-  // }
-  // {
-  //   path: '/record',
-  //   component: Layout,
-  //   redirect: '/record/table',
-  //   name: 'record',
-  //   meta: { title: '业务记录', icon: 'example' },
-  //   children: [
-  //     {
-  //       path: 'table',
-  //       name: 'Table',
-  //       component: () => import('@/views/table/index'),
-  //       meta: { title: '预交金记录', icon: 'table' }
-  //     },
-  //     {
-  //       path: 'tree',
-  //       name: 'Tree',
-  //       component: () => import('@/views/tree/index'),
-  //       meta: { title: '挂号费记录', icon: 'tree' }
-  //     }, {
-  //       path: 'payment',
-  //       name: 'Payment',
-  //       component: () => import('@/views/payment/index'),
-  //       meta: { title: '缴费记录', icon: 'tree' }
-  //     }
-  //   ]
-  // },
-
-  // // 404 page must be placed at the end !!!
-  // { path: '*', redirect: '/404', hidden: true }
 ]
 
 const createRouter = () =>

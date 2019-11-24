@@ -2,8 +2,8 @@
   <div v-if="tableData" class="main">
     <!-- 查询表单 -->
     <el-form :inline="true">
-      <el-form-item label="图片名">
-        <el-input v-model="listQuery.pictureName" clearable placeholder="请输入图片名" />
+      <el-form-item label="影片名">
+        <el-input v-model="listQuery.pictureName" clearable placeholder="请输入影片名" />
       </el-form-item>
       <el-form-item label="作者">
         <el-select v-model="listQuery.actorName" placeholder="请选择" value-key="id">
@@ -15,13 +15,6 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="语言">
-        <el-select v-model="listQuery.language" placeholder="请选择" clearable>
-          <el-option label="汉语" value="chinese" />
-          <el-option label="英语" value="english" />
-          <el-option label="日语" value="japan" />
-        </el-select>
-      </el-form-item>
       <el-form-item label="分类">
         <el-cascader-multi v-model="listQuery.types" :data="typeMap" filterable reserve-keyword />
       </el-form-item>
@@ -29,21 +22,6 @@
         <el-button type="primary" @click="getPageList">查询</el-button>
       </el-form-item>
     </el-form>
-    <!-- <el-row>
-      <el-col :span="8" v-for="(o, index) in 2" :key="o" :offset="index > 0 ? 2 : 0">
-        <el-card :body-style="{ padding: '0px' }">
-          <img src="http://127.0.0.1:8081/website/resources/_MG_0138.jpg" class="image" />
-          <div style="padding: 14px;">
-            <span>好吃的汉堡</span>
-            <div class="bottom clearfix">
-              <time class="time">{{ currentDate }}</time>
-              <el-button type="text" class="button">操作按钮</el-button>
-            </div>
-          </div>
-        </el-card>
-      </el-col>
-    </el-row>-->
-
     <el-row class="row-ul" gutter="20">
       <el-col
         v-for="item in tableData.list"
@@ -53,12 +31,7 @@
         @click.native="handleClick"
       >
         <el-card :body-style="{ padding: '0px' }">
-          <el-image :src="item.coverUrl" :preview-src-list="item.address" @click="showimg" lazy></el-image>
-          <!-- <img
-            src="http://127.0.0.1:8081/website/resources/_MG_0138.jpg"
-            class="image"
-            @click="imgview"
-          />-->
+          <el-image :src="item.coverUrl" @click="showimg" lazy></el-image>
           <div style="padding: 14px;" @click="jump(item.id)">
             <span>{{ item.name }}</span>
             <div class="bottom clearfix">
@@ -81,7 +54,16 @@
                 size="mini"
                 effect="plain"
                 @click="getActor(actors.id)"
-              >{{ actors.chineseName }}</el-tag>
+              >{{ actors.chineseName }}({{actors.count}})</el-tag>
+            </div>
+            <div class="bottom clearfix">
+              <el-rate
+                v-model="item.level"
+                disabled
+                show-score
+                text-color="#ff9900"
+                score-template="{value}"
+              ></el-rate>
             </div>
           </div>
         </el-card>
@@ -102,8 +84,9 @@
   </div>
 </template>
 <script>
-import { getPageList } from '@/api/picture'
+import { getPageList } from '@/api/video'
 export default {
+  name: '日本视频',
   data() {
     return {
       tableData: [],
@@ -111,9 +94,9 @@ export default {
         pageNum: 1,
         pageSize: 10,
         actorName: null,
-        pictureName: null,
-        language: null,
-        types: null
+        videoName: null,
+        types: null,
+        videoType: 3
       },
       typeMap: '',
       actors: '',
@@ -129,9 +112,21 @@ export default {
   created() {
     this.getPageList()
   },
+  beforeRouteLeave(to, form, next) {
+    sessionStorage.setItem(
+      "listQuery_comic_video",
+      JSON.stringify(this.listQuery)
+    );
+    sessionStorage.setItem("refresh_comic_video", true);
+    next()
+  },
   methods: {
     getPageList() {
-      console.log(this.listQuery)
+      var listQuery = sessionStorage.getItem('listQuery_comic_video')
+      var refresh = sessionStorage.getItem('refresh_comic_video')
+      if(listQuery!==null&&refresh!==null&&refresh==='true'){
+        this.listQuery = JSON.parse(listQuery)
+      }
       getPageList(this.listQuery).then(res => {
         this.tableData = res.PageInfo
         this.actors = res.actors
@@ -140,10 +135,12 @@ export default {
     },
     handleCurrentChange(index) {
       this.listQuery.pageNum = index
+      sessionStorage.setItem('refresh_comic_video',false)
       this.getPageList()
     },
     handleSizeChange(pageSize) {
       this.listQuery.pageSize = pageSize
+      sessionStorage.setItem('refresh_comic_video',false)
       this.getPageList()
     },
     handleClick() {
@@ -159,22 +156,27 @@ export default {
       this.listQuery.types = arr1
       this.listQuery.actorName = null
       console.log(this.listQuery)
+      sessionStorage.setItem('refresh_comic_video',false)
       this.getPageList()
     },
     getActor(actor) {
       event.stopPropagation()
       this.listQuery.actorName = actor
       this.listQuery.types = null
+      sessionStorage.setItem('refresh_comic_video',false)
       this.getPageList()
     },
     imgview() {
       alert('2222')
     },
-    jump(picid) {
+    jump(videoid) {
+      sessionStorage.setItem('listQuery',JSON.stringify(this.listQuery))
+      sessionStorage.setItem('listQuery_comic_video',true)
+      sessionStorage.setItem("refresh_video_detail", false)
       this.$router.push({
-        path: '/picture_detail/index',
-        name: '图片详情', // 要跳转的路径的 name,可在 router 文件夹下的 index.js 文件内找
-        params: { id: picid }
+        path: '/video_detail/index',
+        name: '影片详情', // 要跳转的路径的 name,可在 router 文件夹下的 index.js 文件内找
+        params: { id: videoid }
       })
     },
     showimg() {
