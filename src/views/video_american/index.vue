@@ -30,10 +30,10 @@
         class="row-li"
         @click.native="handleClick"
       >
-        <el-card :body-style="{ padding: '0px' }">
+        <el-card :body-style="{ padding: '0px',height: '390px' }">
           <el-image :src="item.coverUrl" @click="showimg" lazy></el-image>
           <div style="padding: 14px;" @click="jump(item.id)">
-            <span>{{ item.name }}</span>
+            <span class="spantest">{{ item.name }}</span>
             <div class="bottom clearfix">
               <time class="time">{{ item.actorname }}</time>
               <span class="tag-group__title">类型:</span>
@@ -74,7 +74,7 @@
     <el-pagination
       :total="tableData.total"
       :current-page="listQuery.pageNum"
-      :page-sizes="[1, 5, 10, 20, 30]"
+      :page-sizes="[1, 6, 12, 18, 24]"
       :page-size="listQuery.pageSize"
       layout="total, sizes, prev, pager, next, jumper"
       style="margin-top: 20px"
@@ -92,7 +92,7 @@ export default {
       tableData: [],
       listQuery: {
         pageNum: 1,
-        pageSize: 10,
+        pageSize: 12,
         actorName: null,
         videoName: null,
         types: null,
@@ -226,5 +226,12 @@ export default {
 
 .clearfix:after {
   clear: both;
+}
+.spantest{
+     overflow: hidden;
+    -webkit-line-clamp: 2;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
 }
 </style>
