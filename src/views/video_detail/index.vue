@@ -1,11 +1,12 @@
 <template>
   <div class="main">
-    <el-tabs v-model="editableTabsValue" type="card" closable @tab-remove="removeTab">
+    <el-tabs v-model="editableTabsValue" type="card" closable @tab-remove="removeTab" @tab-click="tabClick">
       <el-tab-pane
         v-for="(item,index) in tableData"
-        :key="index"
+        :key="item.res.id"
         :label="item.res.name"
         :name="item.res.name"
+
       >
         <el-container>
           <el-header></el-header>
@@ -55,7 +56,7 @@
           </el-col>
         </el-row>
 
-        <el-row style="width: 60%; left: 20%;" v-for="video in item.res.video" :key="video.poster">
+        <el-row style="width: 60%; left: 20%;" v-for="video in videos" :key="video.poster">
           <div class="player-container">
             <video-player
               class="vjs-custom-skin"
@@ -82,6 +83,7 @@ export default {
       querylist: [],
       editableTabsValue: "",
       video: undefined,
+        videos:[],
       listQuery: {
         pageNum: 1,
         pageSize: 10,
@@ -117,12 +119,14 @@ export default {
       JSON.stringify(this.querylist)
     );
     sessionStorage.setItem("refresh_video_detail", true);
+    sessionStorage.setItem("refresh_video_editableTabsValue", this.editableTabsValue);
     next();
   },
   methods: {
     getDetil() {
       var listQuery = sessionStorage.getItem("listQuery_video_detail");
       var refresh = sessionStorage.getItem("refresh_video_detail");
+        this.editableTabsValue = sessionStorage.getItem("refresh_video_editableTabsValue");
       if (listQuery !== null && refresh !== null && refresh === "true") {
         this.querylist = JSON.parse(listQuery);
       }
@@ -137,37 +141,39 @@ export default {
       for (var i = 0; i < this.querylist.length; i++) {
         var srcList = []
         getDetil({ id: this.querylist[i] }).then(res => {
-          for (const i of res.address) {
-            const videoinfo = {
-              playbackRates: [0.7, 1.0, 1.5, 2.0], // 播放速度
-              autoplay: false, // 如果true,浏览器准备好时开始回放。
-              controls: true, // 控制条
-              preload: "auto", // 视频预加载
-              muted: false, // 默认情况下将会消除任何音频。
-              loop: false, // 导致视频一结束就重新开始。
-              language: "zh-CN",
-              aspectRatio: "16:9", // 将播放器置于流畅模式，并在计算播放器的动态大小时使用该值。值应该代表一个比例 - 用冒号分隔的两个数字（例如"16:9"或"4:3"）
-              fluid: true, // 当true时，Video.js player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
-              sources: [
-                {
-                  src: i
-                }
-              ],
-              poster: res.coverUrl,
-              width: document.documentElement.clientWidth,
-              notSupportedMessage: "此视频暂无法播放，请稍后再试" // 允许覆盖Video.js无法播放媒体源时显示的默认信息。
-            };
-            srcList.push(videoinfo);
-          }
-          res.video = srcList
+
           this.tableData.push({ res });
 
-          if (
+          if ((
             this.$route.params.id !== null &&
             this.$route.params.id !== undefined &&
             this.$route.params.id !== "" &&
-            this.$route.params.id === res.id
+            this.$route.params.id === res.id)||i === 0
           ) {
+              srcList = []
+              for (const i of res.address) {
+                  const videoinfo = {
+                      playbackRates: [0.7, 1.0, 1.5, 2.0], // 播放速度
+                      autoplay: false, // 如果true,浏览器准备好时开始回放。
+                      controls: true, // 控制条
+                      preload: "auto", // 视频预加载
+                      muted: false, // 默认情况下将会消除任何音频。
+                      loop: false, // 导致视频一结束就重新开始。
+                      language: "zh-CN",
+                      aspectRatio: "16:9", // 将播放器置于流畅模式，并在计算播放器的动态大小时使用该值。值应该代表一个比例 - 用冒号分隔的两个数字（例如"16:9"或"4:3"）
+                      fluid: true, // 当true时，Video.js player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
+                      sources: [
+                          {
+                              src: i
+                          }
+                      ],
+                      poster: res.coverUrl,
+                      width: document.documentElement.clientWidth,
+                      notSupportedMessage: "此视频暂无法播放，请稍后再试" // 允许覆盖Video.js无法播放媒体源时显示的默认信息。
+                  };
+                  srcList.push(videoinfo);
+              }
+              this.videos = srcList
             this.editableTabsValue = res.name;
           }
         });
@@ -240,7 +246,10 @@ export default {
       }
       console.log(this.querylist);
       console.log(this.tableData);
-    }
+    },
+      tabClick(tag){
+
+      }
   }
 };
 </script>
