@@ -14,3 +14,20 @@ export function changelevel(params) {
     params
   })
 }
+
+export function saveViewHistory(data) {
+  return request({
+    url: '/video/saveViewHistory',
+    method: 'post',
+    data
+  })
+}
+
+export function getWatchList(params) {
+  return request({
+    url: '/video/getWatchList',
+    method: 'get',
+    params
+  })
+}
+

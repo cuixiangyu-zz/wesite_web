@@ -19,7 +19,9 @@ const routesMap = {
   videoJapan: () => import('@/views/video_japan'),
   videoAmerican: () => import('@/views/video_american'),
   videoComic: () => import('@/views/video_comic'),
-  pictureComic: () => import('@/views/picture_comic')
+  pictureComic: () => import('@/views/picture_comic'),
+  userFavorite: () => import('@/views/user_favorite'),
+  userHistory: () => import('@/views/user_history')
 }
 
 function handleRoutes(list) {

@@ -64,7 +64,12 @@
                 show-score
                 text-color="#ff9900"
                 score-template="{value}"
+                class="rate"
               ></el-rate>
+              <el-tooltip class="item" effect="dark" content="添加到播放列表" placement="top">
+                <el-button type="text"  size="medium" class="button" icon="el-icon-plus" @click="addList(item.id)"></el-button>
+              </el-tooltip>
+
             </div>
           </div>
         </el-card>
@@ -108,10 +113,20 @@
                 srcList: [
                     // 'http://127.0.0.1:8081/website/resources/_MG_0170.jpg',
                     // 'http://127.0.0.1:8081/website/resources/_MG_0177.jpg'
-                ]
+                ],
+                videoAndIdList: {
+                    idList: [],
+                    videoList: []
+                }
             }
         },
         created() {
+            var list = sessionStorage.getItem("videoAndIdList");
+            if (list !== null &&
+                list !== undefined &&
+                list !== "") {
+                this.videoAndIdList = JSON.parse(list);
+            }
             this.getPageList()
         },
         beforeRouteLeave(to, form, next) {
@@ -120,6 +135,7 @@
                 JSON.stringify(this.listQuery)
             );
             sessionStorage.setItem("refresh_comic_video", true);
+            sessionStorage.setItem("videoAndIdList", JSON.stringify(this.videoAndIdList));
             next()
         },
         methods: {
@@ -204,6 +220,14 @@
                     return (restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
                 };
             },
+            addList(id){
+                event.stopPropagation();
+                this.videoAndIdList.idList.unshift(id);
+                this.$message({
+                    message: '成功添加到播放列表！！',
+                    type: 'success'
+                });
+            }
         }
     }
 </script>
@@ -227,6 +251,11 @@
   .button {
     padding: 0;
     float: right;
+    display:inline-block;
+  }
+
+  .rate {
+    display:inline-block;
   }
 
   .image {
@@ -237,10 +266,18 @@
   .clearfix:before,
   .clearfix:after {
     display: table;
-    content: '';
+    content: "";
   }
 
   .clearfix:after {
     clear: both;
+  }
+
+  .spantest {
+    overflow: hidden;
+    -webkit-line-clamp: 2;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
   }
 </style>

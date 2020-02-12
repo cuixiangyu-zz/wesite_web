@@ -1,14 +1,13 @@
 <template>
   <div class="sidebar-logo-container" :class="{'collapse':collapse}">
     <transition name="sidebarLogoFade">
-      <router-link v-if="collapse" key="collapse" class="sidebar-logo-link" to="/">
-        <img v-if="logo" src="@/assets/LOGO.png" class="sidebar-logo">
-        <h1 v-else class="sidebar-title">{{ title }}</h1>
+      <router-link  key="collapse" class="sidebar-logo-link" to="/">
+        <h1  class="sidebar-title">视频网站</h1>
       </router-link>
-      <router-link v-else key="expand" class="sidebar-logo-link" to="/">
-        <img v-if="logo" src="@/assets/LOGO.png" class="sidebar-logo">
-        <h1 class="sidebar-title">{{ title }}</h1>
-      </router-link>
+<!--      <router-link v-else key="expand" class="sidebar-logo-link" to="/">-->
+<!--        <img v-if="logo" src="@/assets/LOGO.png" class="sidebar-logo">-->
+<!--        <h1 class="sidebar-title">{{ title }}</h1>-->
+<!--      </router-link>-->
     </transition>
   </div>
 </template>
@@ -24,7 +23,7 @@ export default {
   },
   data() {
     return {
-      title: '商丘中医院',
+      title: '视频网站',
       logo: '@/assets/LOGO.png'
     }
   }
