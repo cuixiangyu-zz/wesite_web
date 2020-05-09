@@ -55,3 +55,11 @@ export function updateType(params) {
     params
   })
 }
+
+export function savePornVideo(params) {
+  return request({
+    url: '/util/savePornVideo',
+    method: 'get',
+    params
+  })
+}

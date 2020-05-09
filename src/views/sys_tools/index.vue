@@ -15,14 +15,14 @@
             />
           </el-form-item>
           <el-form-item label="目标文件夹">
-            <el-input v-model="listQuery.target" clearable placeholder="请输入路径" />
+            <el-input v-model="listQuery.target" clearable placeholder="请输入路径"/>
           </el-form-item>
           <el-form-item>
             <el-form-item label="类别">
               <el-select v-model="listQuery.type" placeholder="请选择" clearable>
-                <el-option label="日本" value="japanvideo" />
-                <el-option label="欧美" value="english" />
-                <el-option label="漫画" value="comic" />
+                <el-option label="日本" value="japanvideo"/>
+                <el-option label="欧美" value="english"/>
+                <el-option label="漫画" value="comic"/>
               </el-select>
             </el-form-item>
             <el-button type="primary" @click="updatefile">更新</el-button>
@@ -61,12 +61,13 @@
           <el-form-item>
             <el-form-item label="类别">
               <el-select v-model="updatetype.type" placeholder="请选择" clearable>
-                <el-option label="日本" value="1" />
-                <el-option label="欧美" value="2" />
-                <el-option label="漫画" value="3" />
+                <el-option label="日本" value="1"/>
+                <el-option label="欧美" value="2"/>
+                <el-option label="漫画" value="3"/>
               </el-select>
             </el-form-item>
             <el-button type="primary" @click="updateType">更新</el-button>
+            <el-button type="primary" @click="pornhub">pornhub</el-button>
           </el-form-item>
         </el-form>
       </el-col>
@@ -75,80 +76,89 @@
   </div>
 </template>
 <script>
-import { updatefile, selectFileForJapan , selectFileForComic ,selectFileForAmerican ,updatePicsFromLocal ,updateType} from "@/api/sysTools";
-// 引入video样式
-import "video.js/dist/video-js.css";
-import "vue-video-player/src/custom-theme.css";
-export default {
-  data() {
-    return {
-      tableData: [],
-      querylist: {
-        id: null
-      },
-      listQuery: {
-        target: null,
-        source: null,
-        type: null,
-        filemap: null
-      },
-      updatetype: {
-        url: '',
-        type: ''
-      },
-      updatefilemap: null,
-      typeMap: "",
-      actors: "",
-      deviceDetail: null,
-      imgSrc: "http://127.0.0.1:8081/website/resources/_MG_0138.jpg",
-      url: "http://127.0.0.1:8081/website/resources/_MG_0138.jpg",
-      srcList: []
+    import {
+        updatefile, selectFileForJapan, selectFileForComic, selectFileForAmerican
+        , updatePicsFromLocal, updateType, savePornVideo
+    } from "@/api/sysTools";
+    // 引入video样式
+    import "video.js/dist/video-js.css";
+    import "vue-video-player/src/custom-theme.css";
+
+    export default {
+        data() {
+            return {
+                tableData: [],
+                querylist: {
+                    id: null
+                },
+                listQuery: {
+                    target: null,
+                    source: null,
+                    type: null,
+                    filemap: null
+                },
+                updatetype: {
+                    url: '',
+                    type: ''
+                },
+                updatefilemap: null,
+                typeMap: "",
+                actors: "",
+                deviceDetail: null,
+                imgSrc: "http://127.0.0.1:8081/website/resources/_MG_0138.jpg",
+                url: "http://127.0.0.1:8081/website/resources/_MG_0138.jpg",
+                srcList: []
+            };
+        },
+        created() {
+            // this.getDetil();
+        },
+        methods: {
+            selectfile() {
+                if (this.listQuery.type === "japanvideo") {
+                    selectFileForJapan(this.listQuery).then(res => {
+                        console.log(res);
+                        this.listQuery.filemap = res;
+                    });
+                } else if (this.listQuery.type === "english") {
+                    selectFileForAmerican(this.listQuery).then(res => {
+                        console.log(res);
+                        this.listQuery.filemap = res;
+                    });
+                } else if (this.listQuery.type === "comic") {
+                    selectFileForComic(this.listQuery).then(res => {
+                        console.log(res);
+                        this.listQuery.filemap = res;
+                    });
+                }
+            },
+            updatefile() {
+
+                if (this.listQuery.type === "japanvideo") {
+                    updatefile(this.listQuery).then(res => {
+                        console.log(res);
+                        this.listQuery.filemap = res;
+                    });
+                } else if (this.listQuery.type === "english") {
+                    updatefile(this.listQuery).then(res => {
+                        console.log(res);
+                        this.listQuery.filemap = res;
+                    });
+                } else if (this.listQuery.type === "comic") {
+                    updatePicsFromLocal(this.listQuery).then(res => {
+                        console.log(res);
+                        this.listQuery.filemap = res;
+                    });
+                }
+            },
+            updateType() {
+                updateType(this.updatetype)
+            },
+            pornhub() {
+                savePornVideo().then(res => {
+                    console.log(res);
+                });
+            }
+        }
     };
-  },
-  created() {
-    // this.getDetil();
-  },
-  methods: {
-    selectfile() {
-      if (this.listQuery.type === "japanvideo") {
-        selectFileForJapan(this.listQuery).then(res => {
-          console.log(res);
-          this.listQuery.filemap = res;
-        });
-      } else if (this.listQuery.type === "english") {
-        selectFileForAmerican(this.listQuery).then(res => {
-          console.log(res);
-          this.listQuery.filemap = res;
-        });
-      } else if (this.listQuery.type === "comic") {
-        selectFileForComic(this.listQuery).then(res => {
-          console.log(res);
-          this.listQuery.filemap = res;
-        });
-      }
-    },
-    updatefile() {
-      
-      if (this.listQuery.type === "japanvideo") {
-        updatefile(this.listQuery).then(res => {
-          console.log(res);
-          this.listQuery.filemap = res;
-        });
-      } else if (this.listQuery.type === "english") {
-        updatefile(this.listQuery).then(res => {
-          console.log(res);
-          this.listQuery.filemap = res;
-        });
-      } else if (this.listQuery.type === "comic") {
-        updatePicsFromLocal(this.listQuery).then(res => {
-          console.log(res);
-          this.listQuery.filemap = res;
-        });
-      }
-    },
-    updateType() {
-      updateType(this.updatetype)
-    }
-  }
-};
 </script>

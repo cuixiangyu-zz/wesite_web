@@ -21,7 +21,8 @@ const routesMap = {
   videoComic: () => import('@/views/video_comic'),
   pictureComic: () => import('@/views/picture_comic'),
   userFavorite: () => import('@/views/user_favorite'),
-  userHistory: () => import('@/views/user_history')
+  userHistory: () => import('@/views/user_history'),
+  videoPornHub: () => import('@/views/video_pornHub')
 }
 
 function handleRoutes(list) {
