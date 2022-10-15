@@ -22,7 +22,13 @@ const routesMap = {
   pictureComic: () => import('@/views/picture_comic'),
   userFavorite: () => import('@/views/user_favorite'),
   userHistory: () => import('@/views/user_history'),
-  videoPornHub: () => import('@/views/video_pornHub')
+  sysTool: () => import('@/views/sys_tools'),
+  pictureDetail: () => import('@/views/picture_detail'),
+  actor: () => import('@/views/actor'),
+  videoDetail: () => import('@/views/video_detail'),
+  videoPornHub: () => import('@/views/video_pornHub'),
+  videoMovie: () => import('@/views/video_movie'),
+  videoKorean: () => import('@/views/video_korean')
 }
 
 function handleRoutes(list) {

@@ -173,9 +173,9 @@ export default {
       sessionStorage.setItem('refresh_comic_picture',true)
       sessionStorage.setItem("refresh_comic_picture_detail", true);
       this.$router.push({
-        path: '/picture_detail/index',
-        name: '图片详情', // 要跳转的路径的 name,可在 router 文件夹下的 index.js 文件内找
-        params: { id: picid }
+        path: '/picture/picture_detail',
+        //name: '图片详情', // 要跳转的路径的 name,可在 router 文件夹下的 index.js 文件内找
+        query: { id: picid }
       })
     },
     showimg() {

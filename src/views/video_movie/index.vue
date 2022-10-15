@@ -16,11 +16,13 @@
         :key="item.id"
         class="row-li"
         @click.native="handleClick"
+        style="height: 390px"
       >
-        <el-card :body-style="{ padding: '0px' }">
+        <el-card :body-style="{ padding: '0px',height: '390px'  }">
           <el-image :src="item.coverUrl" @click="showimg" lazy></el-image>
           <div style="padding: 14px;" @click="jump(item.id)">
-            <span>{{ item.name }}</span>
+            <span class="spantest">{{ item.name }}</span>
+
             <div class="bottom clearfix">
               <time class="time">{{ item.actorname }}</time>
               <span class="tag-group__title">类型:</span>
@@ -29,19 +31,18 @@
                 :key="types.id"
                 size="mini"
                 effect="plain"
-                @click="getType(types)"
               >{{ types.chineseName }}
               </el-tag>
             </div>
             <div class="bottom clearfix">
               <time class="time">{{ item.actorname }}</time>
-              <span class="tag-group__title">作者:</span>
+              <span class="tag-group__title">演员:</span>
               <el-tag
                 v-for="actors in item.actors"
                 :key="actors.id"
                 size="mini"
                 effect="plain"
-                @click="getActor(actors.id)"
+                @click="getActor(actors.chineseName)"
               >{{ actors.chineseName }}({{actors.count}})
               </el-tag>
             </div>
@@ -55,7 +56,8 @@
                 class="rate"
               ></el-rate>
               <el-tooltip class="item" effect="dark" content="添加到播放列表" placement="top">
-                <el-button type="text"  size="medium" class="button" icon="el-icon-plus" @click="addList(item.id)"></el-button>
+                <el-button type="text" size="medium" class="button" icon="el-icon-plus"
+                           @click="addList(item.id)"></el-button>
               </el-tooltip>
 
             </div>
@@ -68,7 +70,7 @@
     <el-pagination
       :total="tableData.total"
       :current-page="listQuery.pageNum"
-      :page-sizes="[1, 5, 10, 20, 30]"
+      :page-sizes="[1, 6, 12, 18, 24]"
       :page-size="listQuery.pageSize"
       layout="total, sizes, prev, pager, next, jumper"
       style="margin-top: 20px"
@@ -78,26 +80,26 @@
   </div>
 </template>
 <script>
-    import {getPageList} from '@/api/video'
+    import {getPageList} from "@/api/video";
 
     export default {
-        name: '日本视频',
+        name: "电影",
         data() {
             return {
                 tableData: [],
                 listQuery: {
                     pageNum: 1,
-                    pageSize: 10,
+                    pageSize: 12,
                     actorName: null,
                     videoName: null,
                     types: null,
-                    videoType: 3
+                    videoType: 5
                 },
-                typeMap: '',
-                actors: '',
+                typeMap: "",
+                actors: "",
                 deviceDetail: null,
-                imgSrc: 'http://127.0.0.1:8081/website/resources/_MG_0170.jpg',
-                url: 'http://127.0.0.1:8081/website/resources/_MG_0170.jpg',
+                imgSrc: "http://127.0.0.1:8081/website/resources/_MG_0170.jpg",
+                url: "http://127.0.0.1:8081/website/resources/_MG_0170.jpg",
                 srcList: [
                     // 'http://127.0.0.1:8081/website/resources/_MG_0170.jpg',
                     // 'http://127.0.0.1:8081/website/resources/_MG_0177.jpg'
@@ -106,7 +108,8 @@
                     idList: [],
                     videoList: []
                 }
-            }
+
+            };
         },
         created() {
             var list = sessionStorage.getItem("videoAndIdList");
@@ -115,87 +118,99 @@
                 list !== "") {
                 this.videoAndIdList = JSON.parse(list);
             }
-            this.getPageList()
+            this.getPageList();
         },
         beforeRouteLeave(to, form, next) {
             sessionStorage.setItem(
-                "listQuery_comic_video",
+                "listQuery_movie",
                 JSON.stringify(this.listQuery)
             );
-            sessionStorage.setItem("refresh_comic_video", true);
+            sessionStorage.setItem("refresh_movie", true);
             sessionStorage.setItem("videoAndIdList", JSON.stringify(this.videoAndIdList));
-            next()
+            next();
         },
         methods: {
             getPageList() {
-                var listQuery = sessionStorage.getItem('listQuery_comic_video')
-                var refresh = sessionStorage.getItem('refresh_comic_video')
-                if (listQuery !== null && refresh !== null && refresh === 'true') {
-                    this.listQuery = JSON.parse(listQuery)
-                    sessionStorage.setItem("refresh_american_video", false);
+                var listQuery = sessionStorage.getItem("listQuery_movie");
+                var refresh = sessionStorage.getItem("refresh_movie");
+
+                if (listQuery !== null && refresh !== null && refresh === "true") {
+                    this.listQuery = JSON.parse(listQuery);
+                    sessionStorage.setItem("refresh_movie", false);
+                }
+                if (
+                    this.$route.query.artistName !== null &&
+                    this.$route.query.artistName !== undefined &&
+                    this.$route.query.artistName !== ""
+                ) {
+                    this.listQuery.actorName = this.$route.query.artistName
+                    this.$route.query.artistName = null
                 }
                 getPageList(this.listQuery).then(res => {
-                    this.tableData = res.PageInfo
+                    this.tableData = res.PageInfo;
                     var actors = res.actors;
                     var list = []
                     actors.forEach(actor => {
                         list.push({"value": actor.chineseName})
                     })
                     this.actors = list
-                    this.typeMap = res.typeMap
-                })
+                    this.typeMap = res.typeMap;
+                });
             },
             handleCurrentChange(index) {
-                this.listQuery.pageNum = index
-                sessionStorage.setItem('refresh_comic_video', false)
-                this.getPageList()
+                this.listQuery.pageNum = index;
+                sessionStorage.setItem("refresh_movie", false);
+                this.getPageList();
             },
             handleSizeChange(pageSize) {
-                this.listQuery.pageSize = pageSize
-                sessionStorage.setItem('refresh_comic_video', false)
-                this.getPageList()
+                this.listQuery.pageSize = pageSize;
+                sessionStorage.setItem("refresh_movie", false);
+                this.getPageList();
             },
             handleClick() {
                 // alert('11111111')
             },
             getType(type) {
-                event.stopPropagation()
-                const arr = []
-                const arr1 = []
-                arr.push('allTypes')
-                arr.push(type.id)
-                arr1.push(arr)
-                this.listQuery.types = arr1
-                this.listQuery.actorName = null
-                console.log(this.listQuery)
-                sessionStorage.setItem('refresh_comic_video', false)
-                this.getPageList()
+                event.stopPropagation();
+                const arr = [];
+                const arr1 = [];
+                arr.push("allTypes");
+                arr.push(type.id);
+                arr1.push(arr);
+                this.listQuery.types = arr1;
+                this.listQuery.actorName = null;
+                console.log(this.listQuery);
+                sessionStorage.setItem("refresh_movie", false);
+                this.getPageList();
             },
             getActor(actor) {
-                event.stopPropagation()
-                this.listQuery.actorName = actor
-                this.listQuery.types = null
-                sessionStorage.setItem('refresh_comic_video', false)
-                this.getPageList()
+                event.stopPropagation();
+                this.listQuery.actorName = actor;
+                this.listQuery.types = null;
+                sessionStorage.setItem("refresh_movie", false);
+                this.getPageList();
             },
             imgview() {
-                alert('2222')
+                alert("2222");
             },
             jump(videoid) {
-                sessionStorage.setItem('listQuery', JSON.stringify(this.listQuery))
-                sessionStorage.setItem('listQuery_comic_video', true)
-                sessionStorage.setItem("refresh_video_detail", false)
+                sessionStorage.setItem(
+                    "listQuery_movie",
+                    JSON.stringify(this.listQuery)
+                );
+                sessionStorage.setItem("refresh_movie", true);
+                sessionStorage.setItem("refresh_movie", true);
                 this.$router.push({
                     path: "/video/video_detail",
                     //name: "videoDetail", // 要跳转的路径的 name,可在 router 文件夹下的 index.js 文件内找
                     query: {id: videoid}
-                })
+                });
             },
             showimg() {
-                const arr = []
-                arr.push('http://127.0.0.1:8081/website/resources/_MG_0177.jpg')
-                arr.push('http://127.0.0.1:8081/website/resources/_MG_0170.jpg')
-                this.srcList = arr
+                const arr = [];
+                arr.push("http://127.0.0.1:8081/website/resources/_MG_0177.jpg");
+                arr.push("http://127.0.0.1:8081/website/resources/_MG_0170.jpg");
+                this.srcList = arr;
             },
             querySearch(queryString, cb) {
                 var actors = this.actors;
@@ -208,7 +223,7 @@
                     return (restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
                 };
             },
-            addList(id){
+            addList(id) {
                 event.stopPropagation();
                 this.videoAndIdList.idList.unshift(id);
                 this.$message({
@@ -217,7 +232,7 @@
                 });
             }
         }
-    }
+    };
 </script>
 
 <style lang="scss" scoped>
@@ -239,11 +254,11 @@
   .button {
     padding: 0;
     float: right;
-    display:inline-block;
+    display: inline-block;
   }
 
   .rate {
-    display:inline-block;
+    display: inline-block;
   }
 
   .image {

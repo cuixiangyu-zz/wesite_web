@@ -14,9 +14,6 @@
           clearable
         ></el-autocomplete>
       </el-form-item>
-      <el-form-item label="分类">
-        <el-cascader-multi v-model="listQuery.types" :data="typeMap" filterable reserve-keyword/>
-      </el-form-item>
       <el-form-item style="margin-right: 50px;">
         <el-button type="primary" @click="getPageList">查询</el-button>
       </el-form-item>
@@ -41,7 +38,6 @@
                 :key="types.id"
                 size="mini"
                 effect="plain"
-                @click="getType(types)"
               >{{ types.chineseName }}
               </el-tag>
             </div>
@@ -203,9 +199,9 @@
                 sessionStorage.setItem("refresh_american_video", true);
                 sessionStorage.setItem("refresh_video_detail", false);
                 this.$router.push({
-                    path: "/video_detail/index",
-                    name: "影片详情", // 要跳转的路径的 name,可在 router 文件夹下的 index.js 文件内找
-                    params: {id: videoid}
+                    path: "/video/video_detail",
+                    //name: "videoDetail", // 要跳转的路径的 name,可在 router 文件夹下的 index.js 文件内找
+                    query: {id: videoid}
                 });
             },
             showimg() {

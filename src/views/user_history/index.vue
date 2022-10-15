@@ -182,9 +182,9 @@
                 if(row.type!=='图片'){
                     sessionStorage.setItem("refresh_video_detail", true);
                     this.$router.push({
-                        path: "/video_detail/index",
-                        name: "影片详情", // 要跳转的路径的 name,可在 router 文件夹下的 index.js 文件内找
-                        params: {id: row.videoId}
+                        path: "/video/video_detail",
+                        //name: "videoDetail", // 要跳转的路径的 name,可在 router 文件夹下的 index.js 文件内找
+                        query: {id: row.videoId}
                     });
                 }else{
 

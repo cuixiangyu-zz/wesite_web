@@ -67,7 +67,7 @@ export const constantRoutes = [
   //     }
   //   ]
   // },
-  {
+  /*{
     path: '/picture_detail',
     component: Layout,
     redirect: '/picture_detail/index',
@@ -131,7 +131,7 @@ export const constantRoutes = [
         meta: { title: '演员' }
       }
     ]
-  }
+  }*/
 ]
 
 const createRouter = () =>

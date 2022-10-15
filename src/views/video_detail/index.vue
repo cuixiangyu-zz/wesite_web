@@ -3,74 +3,104 @@
     <el-container>
       <el-header></el-header>
     </el-container>
-    <el-row type="flex">
-      <el-col :span="6" :offset="6">
-        <el-card>
-          <el-image :key="tableData.id" :src="tableData.coverUrl" :lazy="true" fit="fill"></el-image>
-        </el-card>
-      </el-col>
-      <el-col :span="6">
-        <el-row style="bottom: 0px; top: 0px; right: 0px; left: 20px;">
-          <el-col :span="24">
-            <p style="font-size: 25px; ">{{tableData.name}}</p>
+    <el-col :span="16" :offset="4">
+    <div class="mc-window" style="height: 813px;">
+      <el-container>
+        <el-header style="height: 26px;" height="117px">
+          <!--<span style="width: 66.07%; height: 54px;">行文本</span>-->
+
+        </el-header>
+        <p style="font-size: 25px; ">{{tableData.name}}</p>
+        <el-container>
+          <el-aside style="width: 80%; height: 559px;" width="300px">
+            <template slot-scope="scope">
+              <el-row  v-for="video in videos" :key="video.poster">
+                <div class="player-container">
+                  <video-player
+                    class="vjs-custom-skin"
+                    :options="video"
+                    @keyup.left="down"
+                    @keyup.right="up"
+                  ></video-player>
+                </div>
+              </el-row>
+            </template>
+          </el-aside>
+          <el-container>
+            <el-main style="height: 559px;">
+              <p style="font-size: 15px; ">推荐列表</p>
+                <el-card
+                         v-for="item in suggestVideos"
+                         :span="4"
+                         :key="item.id"
+                         class="row-li"
+                         @click.native="handleClick">
+                  <el-image :src="item.coverUrl" @click="showimg" lazy></el-image>
+                  <div style="padding: 14px;" @click="selectVideo(0,item)">
+                    <span class="spantest">{{ item.name }}</span>
+                  </div>
+                </el-card>
+            </el-main>
+            <el-footer v-if="false">
+            </el-footer>
+          </el-container>
+        </el-container>
+      </el-container>
+      <el-row style="width: 100.01%;">
+        <el-col :md="12" :xs="24">
+          <div class="block">
+            <span class="demonstration">评分</span>
+            <el-rate v-model="level.level" :colors="colors" @change="changelevel(tableData)"></el-rate>
+          </div>
+        </el-col>
+        <el-col :md="12" :xs="24">
+          <div class="block">
+            <span class="demonstration">收藏</span>
+            <el-tooltip class="item" effect="dark" content="添加收藏" placement="right">
+              <el-button v-if="tableData.userFavorite==null" size="small" type="primary" icon="el-icon-star-off"
+                         @click="addFavorite(tableData)"></el-button>
+            </el-tooltip>
+            <el-tooltip class="item" effect="dark" content="取消收藏" placement="right">
+              <el-button v-if="tableData.userFavorite!==null" size="small" type="primary" icon="el-icon-star-on"
+                         @click="deleteFavorite(tableData)"></el-button>
+            </el-tooltip>
             <el-button @click="getWatchList()" type="primary" >播放列表</el-button>
-          </el-col>
-          <el-col :span="24">
-            <div class="block">
-              <span class="demonstration">评分</span>
-              <el-rate v-model="level.level" :colors="colors" @change="changelevel(tableData)"></el-rate>
-            </div>
-            <div class="block">
-              <span class="demonstration">收藏</span>
-              <el-tooltip class="item" effect="dark" content="添加收藏" placement="right">
-                <el-button v-if="tableData.userFavorite==null" size="small" type="primary" icon="el-icon-star-off"
-                           @click="addFavorite(tableData)"></el-button>
-              </el-tooltip>
-              <el-tooltip class="item" effect="dark" content="取消收藏" placement="right">
-                <el-button v-if="tableData.userFavorite!==null" size="small" type="primary" icon="el-icon-star-on"
-                           @click="deleteFavorite(tableData)"></el-button>
-              </el-tooltip>
-            </div>
-          </el-col>
+          </div>
+        </el-col>
+
+      </el-row>
+      <el-row style="width: 100.01%;">
+        <el-col :md="12" :xs="24">
           <el-col :span="24">
             <p style="font-size: 17px; ">作者</p>
-            <el-col
-              v-for="actor in tableData.actors"
-              :span="4"
-              :key="actor.id"
-              class="row-li"
-              @click="getActor(actor.id)"
-            >
-              <el-tag>{{actor.chineseName}}</el-tag>
+            <el-col>
+              <el-tag
+                v-for="actor in tableData.actors"
+                :span="4"
+                :key="actor.id"
+                class="row-li"
+                @click="getActor(actor.name)">{{actor.chineseName}}</el-tag>
             </el-col>
           </el-col>
+        </el-col>
+        <el-col :md="12" :xs="24">
           <el-col :span="24">
             <p style="font-size: 17px; width: 20%;">分类</p>
-            <el-col
-              v-for="type in tableData.types"
-              :span="4"
-              :key="type.id"
-              class="row-li"
-              @click="getType(type)"
-            >
-              <el-tag>{{type.chineseName}}</el-tag>
+            <el-col>
+              <el-tag
+                v-for="type in tableData.types"
+                :key="type.id"
+                class="row-li"
+                >{{type.chineseName}}</el-tag>
             </el-col>
           </el-col>
-        </el-row>
-      </el-col>
-    </el-row>
+        </el-col>
 
-    <el-row style="width: 60%; left: 20%;" v-for="video in videos" :key="video.poster">
-      <div class="player-container">
-        <video-player
-          class="vjs-custom-skin"
-          :options="video"
-          @keyup.left="down"
-          @keyup.right="up"
-        ></video-player>
-      </div>
+      </el-row>
+    </div>
+    </el-col>
+    <el-row type="flex">
     </el-row>
-    <el-row style="width: 60%; left: 20%;"></el-row>
     <el-drawer
       title="播放列表!"
       :visible.sync="tableVisible"
@@ -112,7 +142,7 @@
   </div>
 </template>
 <script>
-    import {getDetil, changelevel, saveViewHistory, getWatchList} from "@/api/videoDetail";
+    import {getDetil, changelevel, saveViewHistory, getWatchList,suggestVideo} from "@/api/videoDetail";
     import {addHistory} from "@/api/viewHistory";
     import {addFavorite, deleteFavorite} from "@/api/userFavorite";
     // 引入video样式
@@ -140,8 +170,8 @@
                 typeMap: "",
                 actors: "",
                 deviceDetail: null,
-                imgSrc: "http://127.0.0.1:8081/website/resources/_MG_0138.jpg",
-                url: "http://127.0.0.1:8081/website/resources/_MG_0138.jpg",
+                imgSrc: "http://192.168.1.14:5003/8t-2/cover/japanVideoCover/ABP-856.jpg",
+                url: "http://192.168.1.14:5003//8t-1/resources/japanvideo/野々浦暖/ABP-856.mp4",
                 level: {
                     id: null,
                     type: null,
@@ -161,7 +191,8 @@
                 videoAndIdList: {
                     idList: [],
                     videoList: []
-                }
+                },
+                suggestVideos: []
             };
         },
         created() {
@@ -202,11 +233,11 @@
                     this.querydata = JSON.parse(listQuery);
                 }
                 if (
-                    this.$route.params.id !== null &&
-                    this.$route.params.id !== undefined &&
-                    this.$route.params.id !== ""
+                    this.$route.query.id !== null &&
+                    this.$route.query.id !== undefined &&
+                    this.$route.query.id !== ""
                 ) {
-                    this.querydata = this.$route.params.id;
+                    this.querydata = this.$route.query.id;
                 }
                 this.viewHistory.videoId = this.querydata;
                 this.videoAndIdList.idList.unshift(this.querydata);
@@ -239,7 +270,13 @@
                         };
                         srcList.push(videoInfo);
                     }
+
+
                     this.videos = srcList
+                });
+                suggestVideo({id: this.querydata}).then(res => {
+                    console.log(res);
+                    this.suggestVideos = res;
                 });
             },
             saveViewHistory() {
@@ -261,15 +298,45 @@
             },
             getActor(actor) {
                 event.stopPropagation();
-                this.listQuery.actorName = actor;
-                this.listQuery.types = null;
-                this.jump();
+                if(this.tableData.type === 1){
+                    var listQuery = sessionStorage.getItem("listQuery_japan_video");
+                    this.listQuery = JSON.parse(listQuery);
+                    sessionStorage.setItem("refresh_japan_video", true);
+                    this.listQuery.actorName = actor;
+                    this.listQuery.types = null;
+                    sessionStorage.setItem(
+                        "listQuery_japan_video",
+                        JSON.stringify(this.listQuery)
+                    );
+                    this.$router.push({
+                        path: "/video/video_japan",
+                    });
+                }else if(this.tableData.type === 2){
+                    var listQuery = sessionStorage.getItem("listQuery_american_video");
+                    this.listQuery = JSON.parse(listQuery);
+                    sessionStorage.setItem("refresh_american_video", true);
+                    this.listQuery.actorName = actor;
+                    this.listQuery.types = null;
+                    sessionStorage.setItem(
+                        "listQuery_american_video",
+                        JSON.stringify(this.listQuery)
+                    );
+                    this.$router.push({
+                        path: "/video/video_american",
+                    });
+                }
             },
             jump() {
-                this.$router.push({
-                    path: "/video/index",
-                    name: "影片" // 要跳转的路径的 name,可
-                });
+                if(this.tableData.type === 1){
+                    this.$router.push({
+                        path: "/video/video_japan",
+                    });
+                }else if(this.tableData.type === 2){
+                    this.$router.push({
+                        path: "/video/video_american",
+                    });
+                }
+
             },
             showimg() {
                 const arr = [];
@@ -375,7 +442,10 @@
                     }
                     this.videos = srcList
                 });
-
+                suggestVideo({id: this.querydata}).then(res => {
+                    console.log(res);
+                    this.suggestVideos = res;
+                });
             },
             tableRowClassName({row, rowIndex}) {
                 if (row.id === this.querydata) {

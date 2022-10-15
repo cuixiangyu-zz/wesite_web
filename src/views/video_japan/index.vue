@@ -14,9 +14,6 @@
           clearable
         ></el-autocomplete>
       </el-form-item>
-      <el-form-item label="分类">
-        <el-cascader-multi v-model="listQuery.types" :data="typeMap" filterable reserve-keyword/>
-      </el-form-item>
       <el-form-item style="margin-right: 50px;">
         <el-button type="primary" @click="getPageList">查询</el-button>
       </el-form-item>
@@ -43,7 +40,6 @@
                 :key="types.id"
                 size="mini"
                 effect="plain"
-                @click="getType(types)"
               >{{ types.chineseName }}
               </el-tag>
             </div>
@@ -69,7 +65,8 @@
                 class="rate"
               ></el-rate>
               <el-tooltip class="item" effect="dark" content="添加到播放列表" placement="top">
-                <el-button type="text"  size="medium" class="button" icon="el-icon-plus" @click="addList(item.id)"></el-button>
+                <el-button type="text" size="medium" class="button" icon="el-icon-plus"
+                           @click="addList(item.id)"></el-button>
               </el-tooltip>
 
             </div>
@@ -103,7 +100,7 @@
                     pageNum: 1,
                     pageSize: 12,
                     actorName: null,
-                    videoName: null,
+                    pictureName: null,
                     types: null,
                     videoType: 1
                 },
@@ -145,9 +142,18 @@
             getPageList() {
                 var listQuery = sessionStorage.getItem("listQuery_japan_video");
                 var refresh = sessionStorage.getItem("refresh_japan_video");
+
                 if (listQuery !== null && refresh !== null && refresh === "true") {
                     this.listQuery = JSON.parse(listQuery);
                     sessionStorage.setItem("refresh_japan_video", false);
+                }
+                if (
+                    this.$route.query.artistName !== null &&
+                    this.$route.query.artistName !== undefined &&
+                    this.$route.query.artistName !== ""
+                ) {
+                    this.listQuery.actorName = this.$route.query.artistName
+                    this.$route.query.artistName = null
                 }
                 getPageList(this.listQuery).then(res => {
                     this.tableData = res.PageInfo;
@@ -204,9 +210,9 @@
                 sessionStorage.setItem("refresh_japan_video", true);
                 sessionStorage.setItem("refresh_video_detail", true);
                 this.$router.push({
-                    path: "/video_detail/index",
-                    name: "影片详情", // 要跳转的路径的 name,可在 router 文件夹下的 index.js 文件内找
-                    params: {id: videoid}
+                    path: "/video/video_detail",
+                    //name: "videoDetail", // 要跳转的路径的 name,可在 router 文件夹下的 index.js 文件内找
+                    query: {id: videoid}
                 });
             },
             showimg() {
@@ -226,7 +232,7 @@
                     return (restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
                 };
             },
-            addList(id){
+            addList(id) {
                 event.stopPropagation();
                 this.videoAndIdList.idList.unshift(id);
                 this.$message({
@@ -257,11 +263,11 @@
   .button {
     padding: 0;
     float: right;
-    display:inline-block;
+    display: inline-block;
   }
 
   .rate {
-    display:inline-block;
+    display: inline-block;
   }
 
   .image {

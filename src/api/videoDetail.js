@@ -31,3 +31,10 @@ export function getWatchList(params) {
   })
 }
 
+export function suggestVideo(params) {
+  return request({
+    url: '/video/suggestVideo',
+    method: 'get',
+    params
+  })
+}

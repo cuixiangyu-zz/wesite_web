@@ -16,6 +16,14 @@ export function updatefile(data) {
   })
 }
 
+export function reName(data) {
+  return request({
+    url: '/video/reName',
+    method: 'post',
+    data
+  })
+}
+
 export function selectFileForComic(params) {
   return request({
     url: '/picture/getComicName',
@@ -32,9 +40,41 @@ export function selectFileForAmerican(params) {
   })
 }
 
+export function moveFileFunc(params) {
+  return request({
+    url: '/video/moveFile',
+    method: 'get',
+    params
+  })
+}
+
 export function selectFileForJapan(params) {
   return request({
     url: '/video/selectfile',
+    method: 'get',
+    params
+  })
+}
+
+export function selectFileForAnimate(params) {
+  return request({
+    url: '/video/selectFileForAnimate',
+    method: 'get',
+    params
+  })
+}
+
+export function selectFileForPornHub(params) {
+  return request({
+    url: '/video/selectFileForPornHub',
+    method: 'get',
+    params
+  })
+}
+
+export function refreshCover(params) {
+  return request({
+    url: '/sysUtil/refreshCover',
     method: 'get',
     params
   })
@@ -56,9 +96,18 @@ export function updateType(params) {
   })
 }
 
+
 export function savePornVideo(params) {
   return request({
     url: '/util/savePornVideo',
+    method: 'get',
+    params
+  })
+}
+
+export function checkVideo(params) {
+  return request({
+    url: '/util/checkVideo',
     method: 'get',
     params
   })
